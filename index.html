@@ -94,6 +94,12 @@ footer h5{font-family:Cinzel,serif;color:#fff;font-size:16px;margin-bottom:10px}
 .det span{flex:1}.det input[type=number]{width:54px;padding:4px}
 .det input[type=checkbox]{width:auto}
 .prog{height:6px;background:var(--ln);border-radius:4px;overflow:hidden;margin:8px 0}.prog i{display:block;height:100%;background:var(--g);width:0;transition:.2s}
+.co h4{color:var(--g2);margin:18px 0 6px;font-size:15px}
+.co .row{display:flex;justify-content:space-between;font-size:13px;padding:4px 0}
+.co .two{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
+.opt{display:flex;gap:8px;align-items:flex-start;border:1px solid var(--ln);border-radius:8px;padding:10px;margin-top:6px;font-size:13px;cursor:pointer}
+.opt input{width:auto;margin-top:3px}
+.ok{text-align:center}.ok .big{font-size:56px}
 .rxbtn{background:var(--acc);color:#fff;border-radius:20px;padding:6px 12px}
 
 @media(max-width:700px){.top{flex-wrap:wrap}.search{order:3;flex-basis:100%}.icons{margin-left:auto}}
@@ -146,6 +152,7 @@ footer h5{font-family:Cinzel,serif;color:#fff;font-size:16px;margin-bottom:10px}
 <div class="drawer" id="dr"><h3>Your Cart <span style="cursor:pointer" onclick="tog(0)">✕</span></h3><div class="items" id="items"></div>
 <div class="tot"><div class="bar"><b>Total</b><b id="tt">₹0</b></div><button class="btn" style="width:100%;margin:0" onclick="checkout()">Proceed to Checkout</button></div></div>
 <div class="toast" id="toast"></div>
+<div class="modal" id="com" onclick="if(event.target==this)closeCo()"><div class="mbox co" id="cobox"></div></div>
 <div class="modal" id="rxm" onclick="if(event.target==this)closeRx()"><div class="mbox">
  <h3>📄 Upload Prescription <span style="cursor:pointer" onclick="closeRx()">✕</span></h3>
  <p style="font-size:13px;color:var(--mt)">Upload a clear photo or PDF of the prescription your doctor gave you. Our pharmacist will check it before dispatching Rx medicines.</p>
@@ -394,12 +401,45 @@ function upd(){
  if(t>=999)t=Math.round(t*.8);$("tt").textContent="₹"+t+(t>0&&t<499?" + ₹40 delivery":"");
 }
 function tog(o){$("dr").classList.toggle("op",!!o);$("ov").classList.toggle("op",!!o)}
-function checkout(){if(!Object.keys(cart).length)return toast("Cart is empty");const rx=Object.keys(cart).some(k=>D[k].rx);
- if(rx&&!rxs.length){tog(0);openRx();return toast("Your cart has Rx medicines – please upload a prescription")}
- toast("Order placed successfully!"+(rx?" Pharmacist will verify your prescription.":"")+" (demo)");cart={};save();upd();tog(0)}
+function checkout(){if(!Object.keys(cart).length)return toast("Cart is empty");tog(0);coRx=rxs.length?String(rxs[0].id):"";$("com").classList.add("op");drawCo()}
+let coRx="",coPay="cod";
+function closeCo(){$("com").classList.remove("op")}
+function totals(){let sub=0;Object.keys(cart).forEach(k=>sub+=Math.round(D[k].pr*.85)*cart[k]);const off=sub>=999?Math.round(sub*.2):0,del=sub-off>0&&sub-off<499?40:0;return{sub,off,del,tot:sub-off+del}}
+function coVal(id){const e=$(id);return e?e.value:""}
+function drawCo(){const keep={};["con","cop","coa","cocity","copin"].forEach(i=>keep[i]=coVal(i));
+ const ids=Object.keys(cart),t=totals(),needRx=ids.some(k=>D[k].rx);
+ $("cobox").innerHTML=`<h3>🛒 Checkout <span style="cursor:pointer" onclick="closeCo()">✕</span></h3>
+ <h4>1. Order summary</h4>${ids.map(k=>`<div class="row"><span>${esc(D[k].n)}${D[k].rx?' <small style="color:#c0392b">Rx</small>':""} × ${cart[k]}</span><span>₹${Math.round(D[k].pr*.85)*cart[k]}</span></div>`).join("")}
+ <div class="row" style="border-top:1px solid var(--ln);margin-top:6px"><span>Subtotal</span><span>₹${t.sub}</span></div>
+ ${t.off?`<div class="row" style="color:var(--g)"><span>Health offer (20% off)</span><span>−₹${t.off}</span></div>`:""}
+ <div class="row"><span>Delivery</span><span>${t.del?"₹"+t.del:"FREE"}</span></div>
+ <div class="row" style="font-size:16px"><b>Total</b><b>₹${t.tot}</b></div>
+ ${needRx?`<h4>2. Prescription <small style="color:#c0392b">(required for Rx medicines)</small></h4>
+  ${rxs.map(r=>`<label class="opt"><input type="radio" name="corx" value="${r.id}" ${coRx==r.id?"checked":""} onchange="coRx=this.value"><span><b>${esc(r.p)}</b>${r.d?" • "+esc(r.d):""}<br><small>Uploaded ${new Date(r.id).toLocaleDateString()}</small></span></label>`).join("")}
+  <label class="opt"><input type="radio" name="corx" value="later" ${coRx=="later"?"checked":""} onchange="coRx=this.value"><span><b>I'll show the original prescription at delivery</b><br><small>Our pharmacist will verify it before handing over Rx medicines.</small></span></label>
+  <button class="btn o" style="width:100%;margin-top:8px" onclick="closeCo();openRx()">📄 Upload a new prescription</button>`:""}
+ <h4>${needRx?3:2}. Delivery details</h4>
+ <label>Full name *</label><input id="con"><label>Mobile number *</label><input id="cop" type="tel" maxlength="10" placeholder="10-digit mobile">
+ <label>Address *</label><textarea id="coa" rows="2" placeholder="House no, street, area"></textarea>
+ <div class="two"><div><label>City *</label><input id="cocity"></div><div><label>PIN code *</label><input id="copin" maxlength="6"></div></div>
+ <h4>${needRx?4:3}. Payment</h4>
+ ${[["cod","💵 Cash on delivery"],["upi","📱 UPI on delivery (GPay / PhonePe / Paytm)"],["card","💳 Card on delivery"]].map(([v,l])=>`<label class="opt"><input type="radio" name="copay" value="${v}" ${coPay==v?"checked":""} onchange="coPay=this.value"><span>${l}</span></label>`).join("")}
+ <button class="btn" style="width:100%;margin-top:18px" onclick="placeOrder()">Place Order • ₹${t.tot}</button>`;
+ Object.keys(keep).forEach(i=>{if($(i))$(i).value=keep[i]})}
+function placeOrder(){const ids=Object.keys(cart),needRx=ids.some(k=>D[k].rx);
+ if(needRx&&!coRx)return toast("Choose a prescription option for your Rx medicines");
+ const v={n:coVal("con").trim(),p:coVal("cop").trim(),a:coVal("coa").trim(),c:coVal("cocity").trim(),pin:coVal("copin").trim()};
+ if(!v.n||!v.a||!v.c)return toast("Please fill in your name, address and city");
+ if(!/^[6-9]\d{9}$/.test(v.p))return toast("Please enter a valid 10-digit mobile number");
+ if(!/^\d{6}$/.test(v.pin))return toast("Please enter a valid 6-digit PIN code");
+ const t=totals(),oid="MC"+Date.now().toString().slice(-8);
+ $("cobox").innerHTML=`<div class="ok"><div class="big">✅</div><h3 style="justify-content:center">Order Placed!</h3>
+ <p>Order ID: <b>${oid}</b></p><p style="font-size:14px;color:var(--mt);margin-top:8px">Thank you, ${esc(v.n)}. Your order of <b>₹${t.tot}</b> will be delivered to ${esc(v.a)}, ${esc(v.c)} – ${esc(v.pin)}.<br>We'll call you on ${esc(v.p)} to confirm.${needRx?"<br>Our pharmacist will verify your prescription before dispatch.":""}</p>
+ <button class="btn" onclick="closeCo()">Continue Shopping</button></div>`;
+ cart={};save();upd()}
 // Prescriptions
 let rxs=load("rx",[]),pend=[];
-function saveRxs(){try{localStorage.setItem("mc_rx",JSON.stringify(rxs));return true}catch(e){toast("Storage full – delete an old prescription first");return false}}
+function saveRxs(){try{localStorage.setItem("mc_rx",JSON.stringify(rxs));return true}catch(e){toast("Saved for this visit only (browser storage is full)");return false}}
 function openRx(){$("rxm").classList.add("op");drawRx()}
 function closeRx(){$("rxm").classList.remove("op")}
 function shrink(f){return new Promise(res=>{const r=new FileReader();r.onload=()=>{if(!f.type.startsWith("image/"))return res({name:f.name,type:f.type,data:r.result});
@@ -411,7 +451,7 @@ const dz=$("drop");["dragover","dragenter"].forEach(ev=>dz.addEventListener(ev,e
 ["dragleave","drop"].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove("on")}));dz.addEventListener("drop",e=>addFiles(e.dataTransfer.files));
 function saveRx(){const p=$("rxp").value.trim();if(!p)return toast("Please enter the patient name");if(!pend.length)return toast("Please add a prescription photo or PDF");
  const files=pend;rxs.unshift({id:Date.now(),p,d:$("rxd").value.trim(),dt:$("rxdt").value,n:$("rxn").value.trim(),files});
- if(!saveRxs()){rxs.shift();return}pend=[];["rxp","rxd","rxdt","rxn"].forEach(i=>$(i).value="");drawPrev();drawRx();toast("Prescription saved ✔");readRx(files)}
+ saveRxs();pend=[];["rxp","rxd","rxdt","rxn"].forEach(i=>$(i).value="");drawPrev();drawRx();toast("Prescription saved ✔");readRx(files)}
 function delRx(id){if(!confirm("Delete this prescription?"))return;rxs=rxs.filter(r=>r.id!=id);saveRxs();drawRx()}
 function viewRx(id,i){const f=rxs.find(r=>r.id==id).files[i];const w=window.open();if(w)w.document.write(f.type.startsWith("image/")?`<img src="${f.data}" style="max-width:100%">`:`<iframe src="${f.data}" style="border:0;width:100%;height:100vh"></iframe>`)}
 function drawRx(){$("rc").textContent=rxs.length;$("rxlist").innerHTML=rxs.length?rxs.map(r=>`<div class="rxi">${r.files[0].type.startsWith("image/")?`<img src="${r.files[0].data}">`:'<span style="font-size:30px">📄</span>'}
