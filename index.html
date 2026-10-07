@@ -101,11 +101,27 @@ footer h5{font-family:Cinzel,serif;color:#fff;font-size:16px;margin-bottom:10px}
 .opt input{width:auto;margin-top:3px}
 .ok{text-align:center}.ok .big{font-size:56px}
 .rxbtn{background:var(--acc);color:#fff;border-radius:20px;padding:6px 12px}
+.sanjeevani-top-ribbon{background:linear-gradient(90deg,#0f5c7a,#0f6b4f);color:#fff;padding:10px 16px;font-size:13px;display:none;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;text-align:center;border-bottom:2px solid var(--acc)}
+.sanjeevani-top-ribbon.active{display:flex}
+.sanjeevani-pill{background:var(--acc);color:#1f2d27;font-weight:700;font-size:11px;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.5px}
+.sanjeevani-spotlight{background:linear-gradient(135deg,#e8f6f0,#eef7fb);border:2px solid #0f5c7a;border-radius:14px;padding:18px 20px;margin-bottom:22px;display:none;box-shadow:0 10px 26px rgba(15,92,122,.12)}
+.sanjeevani-spotlight.active{display:block}
+.card.sanjeevani-selected{border:3px solid #0f5c7a;background:#f2fbf7;box-shadow:0 0 0 5px rgba(15,92,122,.18),0 16px 32px rgba(15,107,79,.22);transform:translateY(-3px);transition:.3s}
+.sanjeevani-badge-bar{background:linear-gradient(90deg,#0f5c7a,#0f6b4f);color:#fff;padding:7px 10px;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap}
+.sanjeevani-badge-bar span.proto{background:rgba(255,255,255,.2);padding:2px 7px;border-radius:10px;font-size:10px}
+.sanjeevani-details-box{margin-top:10px;padding:10px;border-radius:8px;background:#e4f4ec;border:1px solid #b5dec8;font-size:12px;color:#143d2d}
+.sanjeevani-demo-btn{width:100%;margin-top:10px;background:linear-gradient(90deg,#0f5c7a,#0f6b4f);color:#fff;border:0;border-radius:8px;padding:10px 14px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 4px 12px rgba(15,92,122,.25)}
+.sanjeevani-demo-btn:hover{opacity:.95}
+.demo-proto-banner{background:#fff8e6;border:1px solid #f0c975;color:#6e4b00;padding:10px 12px;border-radius:8px;font-size:12px;margin:10px 0;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
 
 @media(max-width:700px){.top{flex-wrap:wrap}.search{order:3;flex-basis:100%}.icons{margin-left:auto}}
 </style>
 </head>
 <body>
+<div class="sanjeevani-top-ribbon" id="sanjeevaniRibbon">
+ <span class="sanjeevani-pill">Hackathon Prototype / Demo</span>
+ <span id="sanjeevaniRibbonText"><b>Selected from Sanjeevani AI:</b> Deep-link refill handoff active (No real cart or payment)</span>
+</div>
 <div class="offer"><span>🎉 <b>HEALTH OFFER:</b> Flat 20% off on orders above ₹999 | Free delivery above ₹499</span><span>📞 24x7 Helpline: 1800-123-4567</span></div>
 <header>
  <div class="top">
@@ -134,6 +150,7 @@ footer h5{font-family:Cinzel,serif;color:#fff;font-size:16px;margin-bottom:10px}
 <section class="sec" id="cats"><h3>Shop by Category</h3><p class="sub">Everything a medical store stocks, neatly organised</p><div class="cats" id="catGrid"></div></section>
 
 <section class="sec" id="shop">
+ <div class="sanjeevani-spotlight" id="sanjeevaniSpotlight"></div>
  <h3 id="title">All Medicines</h3><p class="sub" id="count"></p>
  <div class="bar"><select id="rxf" onchange="render()"><option value="">All products</option><option value="otc">OTC only</option><option value="rx">Prescription (Rx) only</option></select>
  <select id="sort" onchange="render()"><option value="">Sort: Featured</option><option value="lo">Price: Low to High</option><option value="hi">Price: High to Low</option><option value="az">Name: A–Z</option></select></div>
@@ -153,6 +170,7 @@ footer h5{font-family:Cinzel,serif;color:#fff;font-size:16px;margin-bottom:10px}
 <div class="tot"><div class="bar"><b>Total</b><b id="tt">₹0</b></div><button class="btn" style="width:100%;margin:0" onclick="checkout()">Proceed to Checkout</button></div></div>
 <div class="toast" id="toast"></div>
 <div class="modal" id="com" onclick="if(event.target==this)closeCo()"><div class="mbox co" id="cobox"></div></div>
+<div class="modal" id="demoCoModal" onclick="if(event.target==this)closeDemoCheckout()"><div class="mbox co" id="demoCoBox"></div></div>
 <div class="modal" id="rxm" onclick="if(event.target==this)closeRx()"><div class="mbox">
  <h3>📄 Upload Prescription <span style="cursor:pointer" onclick="closeRx()">✕</span></h3>
  <p style="font-size:13px;color:var(--mt)">Upload a clear photo or PDF of the prescription your doctor gave you. Our pharmacist will check it before dispatching Rx medicines.</p>
@@ -233,7 +251,7 @@ Antibiotics|Norflox-TZ|Norfloxacin + Tinidazole|Strip of 10|95|1
 Antibiotics|Levoflox 500|Levofloxacin|Strip of 10|110|1
 Antibiotics|Forcan 150|Fluconazole – antifungal|Strip of 1|25|1
 Antibiotics|Zentel|Albendazole – deworming|1 tablet|20|0
-Diabetes Care|Glycomet 500|Metformin|Strip of 20|30|1
+Diabetes Care|Metformin 500 mg (Glycomet 500)|Metformin 500mg – blood sugar & diabetes care|Strip of 20|30|1
 Diabetes Care|Glycomet GP 1|Metformin + Glimepiride|Strip of 15|115|1
 Diabetes Care|Janumet 50/500|Sitagliptin + Metformin|Strip of 15|490|1
 Diabetes Care|Galvus Met|Vildagliptin + Metformin|Strip of 15|380|1
@@ -243,10 +261,11 @@ Diabetes Care|Huminsulin 30/70|Insulin injection|10 ml vial|180|1
 Diabetes Care|Lantus Solostar|Insulin glargine pen|3 ml pen|720|1
 Diabetes Care|Accu-Chek Active Strips|Glucometer test strips|Box of 50|950|0
 Diabetes Care|Sugar Free Gold|Sugar substitute|100 pellets|125|0
+Heart & BP|Lisinopril 10 mg|Lisinopril 10mg – hypertension & blood pressure care|Strip of 15|95|1
 Heart & BP|Telma 40|Telmisartan – blood pressure|Strip of 15|230|1
 Heart & BP|Amlong 5|Amlodipine – hypertension|Strip of 15|80|1
 Heart & BP|Losar 50|Losartan|Strip of 15|95|1
-Heart & BP|Atorva 10|Atorvastatin – cholesterol|Strip of 15|110|1
+Heart & BP|Atorvastatin 20 mg (Atorva)|Atorvastatin 20mg – cholesterol & heart care|Strip of 15|110|1
 Heart & BP|Rosuvas 10|Rosuvastatin|Strip of 15|240|1
 Heart & BP|Ecosprin 75|Low-dose aspirin – heart protection|Strip of 14|5|1
 Heart & BP|Clopitab 75|Clopidogrel|Strip of 15|95|1
@@ -346,6 +365,34 @@ Devices|Hot Water Bag|Pain relief bag|1 unit|250|0
 Devices|Nebulizer Machine|Compressor nebulizer|1 unit|1650|0
 Devices|Tynor Knee Cap|Knee support|1 pair|420|0`.split("\n").map((l,i)=>{const[c,n,u,p,pr,rx]=l.split("|");return{id:i,c,n,u,p,pr:+pr,rx:rx=="1"}});
 
+// Centralized Demo Product Mapping for Sanjeevani AI Deep-Link Integration
+const DEMO_PRODUCT_MAPPING = {
+ "metformin": "DEMO_PRODUCT_METFORMIN",
+ "lisinopril": "DEMO_PRODUCT_LISINOPRIL",
+ "atorvastatin": "DEMO_PRODUCT_ATORVASTATIN",
+ "amlodipine": "DEMO_PRODUCT_AMLODIPINE",
+ "telmisartan": "DEMO_PRODUCT_TELMISARTAN",
+ "losartan": "DEMO_PRODUCT_LOSARTAN",
+ "aspirin": "DEMO_PRODUCT_ASPIRIN",
+ "pantoprazole": "DEMO_PRODUCT_PANTOPRAZOLE",
+ "paracetamol": "DEMO_PRODUCT_PARACETAMOL",
+ "levothyroxine": "DEMO_PRODUCT_LEVOTHYROXINE"
+};
+
+// Assign centralized demoId to matching catalogue items
+D.forEach(item => {
+ const text = (item.n + " " + item.u).toLowerCase();
+ for (const [key, demoCode] of Object.entries(DEMO_PRODUCT_MAPPING)) {
+  if (!item.demoId && text.includes(key)) {
+   item.demoId = demoCode;
+  }
+ }
+});
+
+let selectedSanjeevaniMedId = null;
+let selectedSanjeevaniQuery = "";
+let selectedSanjeevaniDemoCode = "";
+
 let cat="",cart=load("cart",{}),wish=load("wish",[]),wishView=false;
 function load(k,d){try{return JSON.parse(localStorage.getItem("mc_"+k))||d}catch(e){return d}}
 function save(){try{localStorage.setItem("mc_cart",JSON.stringify(cart));localStorage.setItem("mc_wish",JSON.stringify(wish))}catch(e){}}
@@ -362,11 +409,30 @@ function render(){
  const q=$("q").value.toLowerCase().trim(),f=$("rxf").value,s=$("sort").value;
  let L=D.filter(d=>(wishView?wish.includes(d.id):(!cat||d.c==cat))&&(!q||(d.n+" "+d.u+" "+d.c).toLowerCase().includes(q))&&(!f||(f=="rx")==d.rx));
  if(s=="lo")L.sort((a,b)=>a.pr-b.pr);if(s=="hi")L.sort((a,b)=>b.pr-a.pr);if(s=="az")L.sort((a,b)=>a.n.localeCompare(b.n));
+ // If a medicine was selected from Sanjeevani AI and no active filter hides it, ensure it is visible
+ if(selectedSanjeevaniMedId!==null && !wishView && !q && !cat && !f && !s){
+  const selItem=D.find(x=>x.id===selectedSanjeevaniMedId);
+  if(selItem){
+   L=[selItem,...L.filter(x=>x.id!==selectedSanjeevaniMedId)];
+  }
+ }
  $("title").textContent=wishView?"♡ Your Wishlist":q?`Results for "${q}"`:cat||"All Medicines";
  $("count").textContent=L.length+" products";
- $("grid").innerHTML=L.length?L.map(d=>`<div class="card">${d.rx?'<span class="rx">Rx</span>':''}<button class="wl" onclick="wl(${d.id})">${wish.includes(d.id)?"❤️":"🤍"}</button>
- <div class="img">${art(d)}<img src="images/${slug(d.n)}.jpg" alt="${d.n}" loading="lazy" onload="this.style.display='block'" onerror="imgErr(this)"></div><div class="b"><h4>${d.n}</h4><div class="u">${d.p} • ${d.c}</div><div class="d">${d.u}</div>
- <div class="pr"><span><b>₹${Math.round(d.pr*.85)}</b><s>₹${d.pr}</s></span><button class="add" onclick="add(${d.id})">Add +</button></div></div></div>`).join(""):'<div class="empty">No products found. Try another search.</div>';
+ $("grid").innerHTML=L.length?L.map(d=>{
+  const isSel = d.id === selectedSanjeevaniMedId;
+  return `<div class="card${isSel?' sanjeevani-selected':''}" id="${isSel?'sanjeevani-selected-card':'card-'+d.id}" data-demo-product="${d.demoId||''}">
+  ${isSel?`<div class="sanjeevani-badge-bar"><span>✨ Selected from Sanjeevani AI</span><span class="proto">Hackathon Prototype / Demo</span></div>`:''}
+  ${d.rx?'<span class="rx" style="'+(isSel?'top:40px':'')+'">Rx</span>':''}<button class="wl" style="${isSel?'top:38px':''}" onclick="wl(${d.id})">${wish.includes(d.id)?"❤️":"🤍"}</button>
+  <div class="img">${art(d)}<img src="images/${slug(d.n)}.jpg" alt="${d.n}" loading="lazy" onload="this.style.display='block'" onerror="imgErr(this)"></div><div class="b"><h4>${d.n}</h4><div class="u">${d.p} • ${d.c}</div><div class="d">${d.u}</div>
+  ${isSel?`<div class="sanjeevani-details-box">
+   <div><b>Selected from Sanjeevani AI</b></div>
+   <div style="margin-top:3px">Demo Product ID: <code>${esc(d.demoId||selectedSanjeevaniDemoCode)}</code></div>
+   <div>Refill Pack: <b>${esc(d.p)} (30-Day Supply)</b></div>
+   <div style="color:#0f5c7a;font-weight:600;margin-top:3px">✓ Ready for Demo Refill Review (Not added to real cart)</div>
+   <button class="sanjeevani-demo-btn" onclick="openDemoCheckout(${d.id})">Proceed to Demo Checkout →</button>
+  </div>`:''}
+  <div class="pr"><span><b>₹${Math.round(d.pr*.85)}</b><s>₹${d.pr}</s></span><button class="add" onclick="add(${d.id})">Add +</button></div></div></div>`;
+ }).join(""):'<div class="empty">No products found. Try another search.</div>';
 }
 
 // Drawn pack illustrations (shown when no real photo exists in /images)
@@ -483,6 +549,202 @@ function findMeds(text,src){const box=$("scan"),L=matchText(text||"");box.style.
 function addFound(){let n=0;document.querySelectorAll("#scan .det").forEach(r=>{const c=r.querySelector("input[type=checkbox]");if(c.checked){const id=+c.dataset.id,q=Math.max(1,Math.min(20,+r.querySelector("input[type=number]").value||1));cart[id]=(cart[id]||0)+q;n+=q}});
  if(!n)return toast("Nothing selected");save();upd();closeRx();tog(1);toast(n+" item(s) added from your prescription")}
 function toast(m){const t=$("toast");t.textContent=m;t.classList.add("sh");clearTimeout(t._);t._=setTimeout(()=>t.classList.remove("sh"),2200)}
-render();upd();
+
+// ---- Sanjeevani AI Demo-Only Deep-Link & Mock Checkout Integration ----
+function resolveDemoMedicineFromParam(rawMedParam){
+ if(!rawMedParam) return null;
+ const raw = rawMedParam.trim();
+ if(!raw) return null;
+ const cleanKey = raw.replace(/\b\d+\s*(mg|mcg|g|ml|iu|tablets?|tabs?|capsules?|caps?)\b.*$/i,"").trim().toLowerCase() || raw.toLowerCase();
+ let demoCode = DEMO_PRODUCT_MAPPING[cleanKey];
+ if(!demoCode){
+  for(const [k, code] of Object.entries(DEMO_PRODUCT_MAPPING)){
+   if(cleanKey.includes(k) || k.includes(cleanKey)){
+    demoCode = code;
+    break;
+   }
+  }
+ }
+ if(!demoCode){
+  demoCode = "DEMO_PRODUCT_" + cleanKey.replace(/[^a-z0-9]+/gi,"_").toUpperCase();
+ }
+ selectedSanjeevaniDemoCode = demoCode;
+
+ // 1. Match by centralized demoId first
+ let matched = D.find(item => item.demoId === demoCode);
+ // 2. Fallback match by name or therapeutic description
+ if(!matched){
+  matched = D.find(item => (item.n + " " + item.u).toLowerCase().includes(cleanKey));
+ }
+ // 3. If a custom medication was added in Sanjeevani AI, register a DEMO product so any medicine works dynamically
+ if(!matched){
+  matched = {
+   id: D.length,
+   c: "Heart & BP",
+   n: raw + " (Demo Refill Pack)",
+   u: raw + " – Daily prescribed wellness & maintenance medication",
+   p: "Strip of 30 tablets",
+   pr: 120,
+   rx: true,
+   demoId: demoCode
+  };
+  D.unshift(matched);
+ } else if(!matched.demoId){
+  matched.demoId = demoCode;
+ }
+ return matched;
+}
+
+function scrollToSelectedDemoProduct(){
+ const cardEl = $("sanjeevani-selected-card");
+ if(cardEl){
+  cardEl.scrollIntoView({ behavior: "smooth", block: "center" });
+ } else if($("sanjeevaniSpotlight")){
+  $("sanjeevaniSpotlight").scrollIntoView({ behavior: "smooth", block: "center" });
+ }
+}
+
+function renderSanjeevaniSpotlight(medItem){
+ const ribbon = $("sanjeevaniRibbon");
+ const spot = $("sanjeevaniSpotlight");
+ if(!medItem){
+  if(ribbon) ribbon.classList.remove("active");
+  if(spot) spot.classList.remove("active");
+  return;
+ }
+ if(ribbon){
+  ribbon.classList.add("active");
+  $("sanjeevaniRibbonText").innerHTML = `<b>Selected from Sanjeevani AI:</b> ${esc(medItem.n)} (<code>${esc(medItem.demoId||selectedSanjeevaniDemoCode)}</code>) • Hackathon Prototype / Demo`;
+ }
+ if(spot){
+  spot.classList.add("active");
+  const demoPrice = Math.round(medItem.pr * .85);
+  spot.innerHTML = `
+   <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px">
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+     <span style="background:#0f5c7a;color:#fff;font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px">✨ Selected from Sanjeevani AI</span>
+     <span style="background:#e8a33d;color:#1f2d27;font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;text-transform:uppercase">Hackathon Prototype / Demo</span>
+    </div>
+    <small style="color:#0f5c7a;font-weight:600">Demo Product ID: <code>${esc(medItem.demoId||selectedSanjeevaniDemoCode)}</code></small>
+   </div>
+   <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px">
+    <div>
+     <h4 style="font-size:20px;color:#0b5039;margin-bottom:4px">${esc(medItem.n)}</h4>
+     <p style="font-size:13px;color:#44544d">${esc(medItem.u)} • <b>${esc(medItem.p)}</b> • Indicative Demo Price: <b>₹${demoPrice}</b></p>
+     <p style="font-size:12px;color:#0f5c7a;margin-top:4px">🔒 <b>Demo-Only Safeguard:</b> Not automatically added to a real cart. No real order or payment will be processed.</p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+     <button class="btn" style="margin:0;background:#0f5c7a" onclick="openDemoCheckout(${medItem.id})">Proceed to Demo Checkout</button>
+     <button class="btn o" style="margin:0" onclick="scrollToSelectedDemoProduct()">View Highlighted Product ↓</button>
+    </div>
+   </div>
+  `;
+ }
+}
+
+function openDemoCheckout(medId){
+ const medItem = D.find(x => x.id === medId) || D.find(x => x.id === selectedSanjeevaniMedId);
+ if(!medItem) return;
+ const demoPrice = Math.round(medItem.pr * .85);
+ const modal = $("demoCoModal");
+ const box = $("demoCoBox");
+ if(!modal || !box) return;
+ modal.classList.add("op");
+ box.innerHTML = `
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+   <span style="background:#0f5c7a;color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px">Selected from Sanjeevani AI</span>
+   <span style="background:#e8a33d;color:#1f2d27;font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;text-transform:uppercase">Hackathon Prototype / Demo</span>
+  </div>
+  <h3>🧪 Demo Refill Checkout <span style="cursor:pointer" onclick="closeDemoCheckout()">✕</span></h3>
+  <div class="demo-proto-banner">
+   <span><b>Hackathon Prototype / Demo Mode:</b> This mock checkout simulates the refill handoff from Sanjeevani AI. No real cart, order, or payment is processed.</span>
+  </div>
+  <h4>1. Selected Medicine from Sanjeevani AI</h4>
+  <div style="background:#f3faf6;border:1px solid #b5dec8;border-radius:10px;padding:12px;font-size:13px">
+   <div class="row"><span><b>${esc(medItem.n)}</b></span><span><b>₹${demoPrice} (Demo)</b></span></div>
+   <div class="row"><span style="color:var(--mt)">Demo Product Mapping</span><span><code>${esc(medItem.demoId||selectedSanjeevaniDemoCode)}</code></span></div>
+   <div class="row"><span style="color:var(--mt)">Refill Pack Quantity</span><span>1 Pack (${esc(medItem.p)})</span></div>
+   <div class="row"><span style="color:var(--mt)">Source Application</span><span style="color:#0f5c7a;font-weight:600">Selected from Sanjeevani AI</span></div>
+  </div>
+  <h4>2. Example Delivery Details (Demo Pre-filled)</h4>
+  <label>Patient Full Name</label>
+  <input id="demoName" value="Alex Johnson (Demo Patient)">
+  <label>Contact Phone Number</label>
+  <input id="demoPhone" value="+1 555-019-2834">
+  <label>Delivery Address</label>
+  <textarea id="demoAddr" rows="2">742 Evergreen Terrace, Apt 4B, Springfield</textarea>
+  <div class="two">
+   <div><label>City</label><input id="demoCity" value="Springfield"></div>
+   <div><label>Postal / PIN Code</label><input id="demoPin" value="62704"></div>
+  </div>
+  <h4>3. Example Payment Method (Mock Only — No Charge)</h4>
+  <label class="opt">
+   <input type="radio" name="demopay" checked>
+   <span><b>🧪 Hackathon Demo Mode — No Real Payment Processed (₹0 Charged)</b><br><small>Simulates prescription refill confirmation without charging any payment method.</small></span>
+  </label>
+  <label class="opt">
+   <input type="radio" name="demopay">
+   <span><b>💵 Mock Pay on Delivery (Simulation Only)</b><br><small>Example delivery verification option for judge walkthrough.</small></span>
+  </label>
+  <button class="btn" style="width:100%;margin-top:18px;background:#0f5c7a;font-weight:600" onclick="placeDemoOrder(${medItem.id})">Place Demo Order</button>
+ `;
+}
+
+function placeDemoOrder(medId){
+ const medItem = D.find(x => x.id === medId) || D.find(x => x.id === selectedSanjeevaniMedId) || D[0];
+ const nameVal = ($("demoName") && $("demoName").value.trim()) || "Alex Johnson";
+ const addrVal = ($("demoAddr") && $("demoAddr").value.trim()) || "742 Evergreen Terrace, Apt 4B, Springfield";
+ const demoOrderId = "DEMO-SJ-" + Date.now().toString().slice(-6);
+ const box = $("demoCoBox");
+ if(!box) return;
+ box.innerHTML = `
+  <div class="ok" style="padding:10px 4px">
+   <div style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+    <span style="background:#0f5c7a;color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px">Selected from Sanjeevani AI</span>
+    <span style="background:#e8a33d;color:#1f2d27;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;text-transform:uppercase">Hackathon Prototype / Demo</span>
+   </div>
+   <div class="big">✅</div>
+   <h3 style="justify-content:center;font-size:22px;color:#0b5039;margin-top:6px">Demo order completed successfully</h3>
+   <p style="font-size:13px;color:#0f5c7a;font-weight:600;margin-top:4px">Hackathon Prototype / Demo — No real order or payment was processed</p>
+   <div style="text-align:left;background:#f3faf6;border:1px solid #b5dec8;border-radius:10px;padding:14px;margin:16px 0;font-size:13px">
+    <div class="row"><span>Demo Order Reference:</span><b>${demoOrderId}</b></div>
+    <div class="row"><span>Selected Medicine:</span><b>${esc(medItem.n)}</b></div>
+    <div class="row"><span>Demo Product Mapping:</span><code>${esc(medItem.demoId||selectedSanjeevaniDemoCode)}</code></div>
+    <div class="row"><span>Recipient (Demo):</span><span>${esc(nameVal)}</span></div>
+    <div class="row"><span>Delivery Address (Demo):</span><span>${esc(addrVal)}</span></div>
+    <div class="row"><span>Payment Processed:</span><b style="color:#0b5039">₹0 (Demo Simulation Only)</b></div>
+   </div>
+   <button class="btn" style="background:#0f5c7a" onclick="closeDemoCheckout()">Done (Close Demo Checkout)</button>
+  </div>
+ `;
+ toast("Demo order completed successfully");
+}
+
+function closeDemoCheckout(){
+ const modal = $("demoCoModal");
+ if(modal) modal.classList.remove("op");
+}
+
+function initSanjeevaniDeepLink(){
+ try {
+  const params = new URLSearchParams(window.location.search);
+  const medParam = params.get("medicine");
+  if(!medParam) return;
+  selectedSanjeevaniQuery = medParam;
+  const matched = resolveDemoMedicineFromParam(medParam);
+  if(matched){
+   selectedSanjeevaniMedId = matched.id;
+   renderSanjeevaniSpotlight(matched);
+   render();
+   setTimeout(() => {
+    scrollToSelectedDemoProduct();
+   }, 250);
+  }
+ } catch(e) {
+  console.warn("Sanjeevani deep-link init warning:", e);
+ }
+}
+
+render();upd();initSanjeevaniDeepLink();
 </script>
 </body></html>
