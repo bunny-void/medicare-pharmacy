@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MediCare Pharmacy</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--g:#0f6b4f;--g2:#0b5039;--acc:#e8a33d;--bg:#f6faf7;--card:#fff;--tx:#1f2d27;--mt:#66756e;--ln:#dfe9e3}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Poppins,sans-serif;background:var(--bg);color:var(--tx)}
+a{color:inherit;text-decoration:none}
+.offer{background:var(--g2);color:#fff;font-size:13px;padding:8px 16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.offer b{color:var(--acc)}
+header{background:#fff;border-bottom:1px solid var(--ln);position:sticky;top:0;z-index:20}
+.top{max-width:1300px;margin:auto;display:flex;align-items:center;gap:20px;padding:14px 16px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo .ic{width:44px;height:44px;border-radius:50%;background:var(--g);color:#fff;display:grid;place-items:center;font-size:24px;font-weight:700}
+.logo h1{font-family:Cinzel,serif;font-size:21px;color:var(--g)}
+.logo small{display:block;font-size:10px;color:var(--mt);letter-spacing:1px}
+.search{flex:1;display:flex;border:1px solid var(--ln);border-radius:30px;overflow:hidden}
+.search input{flex:1;border:0;padding:11px 18px;font:inherit;outline:0;min-width:0}
+.search button{background:var(--g);color:#fff;border:0;padding:0 20px;cursor:pointer}
+.icons{display:flex;gap:18px;font-size:14px}
+.icons span{cursor:pointer;position:relative}
+.badge{position:absolute;top:-8px;right:-12px;background:var(--acc);color:#fff;font-size:11px;border-radius:10px;padding:0 6px;font-style:normal}
+nav{max-width:1300px;margin:auto;display:flex;gap:6px;padding:0 16px 10px;overflow-x:auto}
+nav a{white-space:nowrap;font-size:14px;padding:6px 12px;border-radius:20px;cursor:pointer}
+nav a:hover,nav a.on{background:var(--g);color:#fff}
+.hero{background:linear-gradient(135deg,#e7f4ec,#fdf6ea);text-align:center;padding:70px 16px}
+.pill{display:inline-block;background:#fff;color:var(--g);border:1px solid var(--g);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600}
+.hero h2{font-family:Cinzel,serif;font-size:clamp(28px,5vw,48px);color:var(--g2);margin:18px 0}
+.hero p{max-width:720px;margin:auto;color:var(--mt)}
+.hero em{display:block;color:var(--acc);font-weight:500;margin-bottom:10px}
+.btn{display:inline-block;background:var(--g);color:#fff;border:0;border-radius:6px;padding:12px 26px;margin:24px 6px 0;cursor:pointer;font:inherit}
+.btn.o{background:#fff;color:var(--g);border:1px solid var(--g)}
+.feat{max-width:1300px;margin:30px auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;padding:0 16px}
+.feat div{background:#fff;border:1px solid var(--ln);border-radius:10px;padding:18px;font-size:14px}
+.feat b{display:block;color:var(--g)}
+.sec{max-width:1300px;margin:40px auto;padding:0 16px}
+.sec h3{font-family:Cinzel,serif;font-size:28px;color:var(--g2);text-align:center}
+.sub{text-align:center;color:var(--mt);margin-bottom:24px}
+.cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}
+.cat{background:#fff;border:1px solid var(--ln);border-radius:12px;padding:18px;text-align:center;cursor:pointer;transition:.2s}
+.cat:hover{transform:translateY(-3px);border-color:var(--g)}
+.cat .e{font-size:32px}.cat p{font-size:13px;margin-top:6px;font-weight:500}
+.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+select{padding:8px;border:1px solid var(--ln);border-radius:6px;font:inherit}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;position:relative}
+.card .img{height:170px;display:grid;place-items:center;font-size:54px;background:#eef6f1;position:relative}
+.card .img svg{width:100%;height:100%}
+.card .img img{display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#fff;padding:8px}
+.card .rx{position:absolute;top:10px;left:10px;background:#c0392b;color:#fff;font-size:11px;padding:2px 8px;border-radius:10px}
+.card .wl{position:absolute;top:8px;right:10px;cursor:pointer;font-size:20px;background:none;border:0}
+.card .b{padding:14px;flex:1;display:flex;flex-direction:column}
+.card h4{font-size:15px}.card .u{font-size:12px;color:var(--mt);margin:3px 0 8px}
+.card .d{font-size:12px;color:var(--mt);flex:1}
+.pr{display:flex;align-items:center;justify-content:space-between;margin-top:12px}
+.pr b{color:var(--g);font-size:17px}.pr s{color:var(--mt);font-size:12px;margin-left:4px}
+.add{background:var(--g);color:#fff;border:0;border-radius:6px;padding:7px 14px;cursor:pointer;font:inherit;font-size:13px}
+.empty{text-align:center;color:var(--mt);padding:40px}
+.drawer{position:fixed;top:0;right:-420px;width:min(400px,100%);height:100%;background:#fff;z-index:50;box-shadow:-4px 0 20px #0002;transition:.3s;display:flex;flex-direction:column}
+.drawer.op{right:0}
+.drawer h3{padding:18px;border-bottom:1px solid var(--ln);display:flex;justify-content:space-between}
+.items{flex:1;overflow:auto;padding:12px 18px}
+.it{display:flex;gap:10px;align-items:center;border-bottom:1px solid var(--ln);padding:10px 0;font-size:14px}
+.it div{flex:1}.it button{border:1px solid var(--ln);background:#fff;width:26px;height:26px;cursor:pointer;border-radius:4px}
+.tot{padding:18px;border-top:1px solid var(--ln)}
+.ov{position:fixed;inset:0;background:#0005;z-index:40;display:none}.ov.op{display:block}
+.note{background:#fff7e6;border:1px solid #f1d7a3;border-radius:10px;padding:14px;font-size:13px;margin-top:20px}
+footer{background:var(--g2);color:#d8e8df;margin-top:60px;padding:40px 16px;font-size:14px}
+footer .w{max-width:1300px;margin:auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px}
+footer h5{font-family:Cinzel,serif;color:#fff;font-size:16px;margin-bottom:10px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--g2);color:#fff;padding:10px 20px;border-radius:30px;opacity:0;transition:.3s;z-index:60;pointer-events:none}
+.toast.sh{opacity:1}
+@media(max-width:700px){.top{flex-wrap:wrap}.search{order:3;flex-basis:100%}.icons{margin-left:auto}}
+</style>
+</head>
+<body>
+<div class="offer"><span>🎉 <b>HEALTH OFFER:</b> Flat 20% off on orders above ₹999 | Free delivery above ₹499</span><span>📞 24x7 Helpline: 1800-123-4567</span></div>
+<header>
+ <div class="top">
+  <div class="logo"><div class="ic">✚</div><div><h1>MediCare Pharmacy</h1><small>TRUSTED MEDICINES • ESTD. 1995</small></div></div>
+  <div class="search"><input id="q" placeholder="Search medicines, e.g. Paracetamol, Dolo, ORS..."><button onclick="go()">🔍</button></div>
+  <div class="icons"><span>👤 Account</span><span onclick="showWish()">♡ Wishlist<i class="badge" id="wc">0</i></span><span onclick="tog(1)">🛒 Cart<i class="badge" id="cc">0</i></span></div>
+ </div>
+ <nav id="nav"></nav>
+</header>
+
+<section class="hero">
+ <span class="pill">✚ 100% GENUINE MEDICINES</span>
+ <h2>Your Trusted Neighbourhood Pharmacy,<br>Delivered to Your Doorstep</h2>
+ <em>"Every medicine you need – from fever tablets to diabetes care."</em>
+ <p>Browse everyday medicines, OTC products, vitamins, baby care and first-aid essentials available at a regular medical shop. Licensed pharmacists verify every prescription order.</p>
+ <a class="btn" href="#shop">Shop Medicines</a><a class="btn o" href="#cats">Browse Categories</a>
+</section>
+
+<div class="feat">
+ <div><b>🚚 Fast Delivery</b>Same-day delivery in your city</div>
+ <div><b>✅ 100% Genuine</b>Sourced directly from licensed distributors</div>
+ <div><b>💊 Pharmacist Support</b>Free consultation on dosage &amp; usage</div>
+ <div><b>🔒 Secure Checkout</b>UPI, cards &amp; cash on delivery</div>
+</div>
+
+<section class="sec" id="cats"><h3>Shop by Category</h3><p class="sub">Everything a medical store stocks, neatly organised</p><div class="cats" id="catGrid"></div></section>
+
+<section class="sec" id="shop">
+ <h3 id="title">All Medicines</h3><p class="sub" id="count"></p>
+ <div class="bar"><select id="rxf" onchange="render()"><option value="">All products</option><option value="otc">OTC only</option><option value="rx">Prescription (Rx) only</option></select>
+ <select id="sort" onchange="render()"><option value="">Sort: Featured</option><option value="lo">Price: Low to High</option><option value="hi">Price: High to Low</option><option value="az">Name: A–Z</option></select></div>
+ <div class="grid" id="grid"></div>
+ <div class="note">⚠️ <b>Disclaimer:</b> Prices are indicative MRP. Products marked <b>Rx</b> need a valid prescription from a registered doctor. Always consult a doctor or pharmacist before taking any medicine.</div>
+</section>
+
+<footer><div class="w">
+ <div><h5>MediCare Pharmacy</h5>Serving families with genuine medicines and caring advice since 1995.</div>
+ <div><h5>Quick Links</h5>About Us<br>Upload Prescription<br>Track Order<br>FAQs</div>
+ <div><h5>Policies</h5>Returns &amp; Refunds<br>Privacy Policy<br>Terms of Service</div>
+ <div><h5>Contact</h5>📍 MG Road, Bengaluru<br>📞 1800-123-4567<br>✉ care@medicare.example</div>
+</div><p style="text-align:center;margin-top:30px;opacity:.7">© 2026 MediCare Pharmacy. All rights reserved.</p></footer>
+
+<div class="ov" id="ov" onclick="tog(0)"></div>
+<div class="drawer" id="dr"><h3>Your Cart <span style="cursor:pointer" onclick="tog(0)">✕</span></h3><div class="items" id="items"></div>
+<div class="tot"><div class="bar"><b>Total</b><b id="tt">₹0</b></div><button class="btn" style="width:100%;margin:0" onclick="checkout()">Proceed to Checkout</button></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const CATS={"Fever & Pain":"🌡️","Cold, Cough & Allergy":"🤧","Stomach & Digestion":"🫃","Antibiotics":"💊","Diabetes Care":"🩸","Heart & BP":"❤️","Vitamins & Supplements":"🍊","Skin Care":"🧴","Eye & Ear Care":"👁️","Women's Health":"🌸","Baby Care":"🍼","First Aid":"🩹","Ayurveda":"🌿","Thyroid & Hormones":"🦋","Mental Health & Sleep":"🧠","Personal Care":"🪥","Devices":"🩺"};
+// category|name|use|pack|MRP|rx
+const D=`Fever & Pain|Dolo 650 Tablet|Paracetamol 650mg – fever & body pain|Strip of 15|34|0
+Fever & Pain|Crocin Advance|Paracetamol 500mg – fast fever relief|Strip of 20|30|0
+Fever & Pain|Calpol 500|Paracetamol 500mg|Strip of 15|17|0
+Fever & Pain|Combiflam|Ibuprofen + Paracetamol – pain & inflammation|Strip of 20|45|0
+Fever & Pain|Disprin|Aspirin 350mg – headache relief|Strip of 10|12|0
+Fever & Pain|Saridon|Headache relief tablet|Strip of 10|42|0
+Fever & Pain|Zerodol-SP|Aceclofenac + Paracetamol + Serratiopeptidase|Strip of 10|118|1
+Fever & Pain|Hifenac-P|Aceclofenac + Paracetamol|Strip of 10|65|1
+Fever & Pain|Brufen 400|Ibuprofen 400mg|Strip of 15|28|0
+Fever & Pain|Volini Gel|Diclofenac pain-relief gel|30 g tube|165|0
+Fever & Pain|Moov Ointment|Pain relief for back & joints|50 g|175|0
+Fever & Pain|Iodex Balm|Body pain relief balm|40 g|130|0
+Fever & Pain|Meftal Spas|Mefenamic acid + Dicyclomine – cramps|Strip of 10|52|1
+Fever & Pain|Ultracet|Tramadol + Paracetamol|Strip of 15|240|1
+Fever & Pain|Nise|Nimesulide 100mg|Strip of 15|70|1
+Cold, Cough & Allergy|Okacet (Cetirizine 10mg)|Antihistamine for allergy|Strip of 10|20|0
+Cold, Cough & Allergy|Allegra 120|Fexofenadine – allergy & sneezing|Strip of 10|210|0
+Cold, Cough & Allergy|Montair LC|Montelukast + Levocetirizine|Strip of 10|240|1
+Cold, Cough & Allergy|Sinarest|Cold & flu combination tablet|Strip of 10|58|0
+Cold, Cough & Allergy|Vicks Action 500|Cold relief tablet|Strip of 10|50|0
+Cold, Cough & Allergy|Benadryl Cough Syrup|Diphenhydramine cough formula|150 ml|135|0
+Cold, Cough & Allergy|Ascoril LS Syrup|Ambroxol + Levosalbutamol – wet cough|100 ml|118|1
+Cold, Cough & Allergy|Grilinctus Syrup|Dry cough relief|100 ml|125|1
+Cold, Cough & Allergy|Honitus Syrup|Ayurvedic cough syrup|100 ml|105|0
+Cold, Cough & Allergy|Vicks VapoRub|Nasal congestion relief|50 ml|160|0
+Cold, Cough & Allergy|Otrivin Nasal Spray|Xylometazoline – blocked nose|10 ml|110|0
+Cold, Cough & Allergy|Strepsils|Sore throat lozenges|Pack of 8|40|0
+Cold, Cough & Allergy|Avil 25|Pheniramine – allergy|Strip of 15|14|0
+Cold, Cough & Allergy|Asthalin Inhaler|Salbutamol inhaler – asthma|200 doses|155|1
+Cold, Cough & Allergy|Budecort 200 Inhaler|Budesonide inhaler|200 doses|420|1
+Stomach & Digestion|Pan 40|Pantoprazole – acidity & GERD|Strip of 15|165|1
+Stomach & Digestion|Pantocid DSR|Pantoprazole + Domperidone|Strip of 15|230|1
+Stomach & Digestion|Omez 20|Omeprazole capsule|Strip of 20|60|1
+Stomach & Digestion|Digene Gel|Antacid – mint flavour|200 ml|150|0
+Stomach & Digestion|Eno Fruit Salt|Instant acidity relief|Pack of 6 sachets|60|0
+Stomach & Digestion|Gelusil MPS|Antacid & anti-gas|200 ml|130|0
+Stomach & Digestion|Electral ORS|WHO-formula oral rehydration|Pack of 5 sachets|105|0
+Stomach & Digestion|Enterogermina|Probiotic – diarrhoea|Pack of 5 vials|285|0
+Stomach & Digestion|Ondem 4|Ondansetron – nausea & vomiting|Strip of 10|60|1
+Stomach & Digestion|Domstal|Domperidone – nausea|Strip of 10|40|1
+Stomach & Digestion|Cyclopam|Dicyclomine – stomach cramps|Strip of 10|45|1
+Stomach & Digestion|Dulcolax|Bisacodyl – constipation|Strip of 10|25|0
+Stomach & Digestion|Cremaffin Plus|Laxative syrup|225 ml|230|0
+Stomach & Digestion|Sat Isabgol|Psyllium husk – fibre|100 g|130|0
+Stomach & Digestion|Pudin Hara Pearls|Mint oil – gas & indigestion|Strip of 10|25|0
+Stomach & Digestion|Eldoper (Loperamide)|Diarrhoea control|Strip of 10|28|0
+Stomach & Digestion|Udiliv 300|Ursodeoxycholic acid – liver|Strip of 15|720|1
+Antibiotics|Augmentin 625 Duo|Amoxicillin + Clavulanic acid|Strip of 10|225|1
+Antibiotics|Azithral 500|Azithromycin|Strip of 5|120|1
+Antibiotics|Mox 500|Amoxicillin capsules|Strip of 10|85|1
+Antibiotics|Ciplox 500|Ciprofloxacin|Strip of 10|65|1
+Antibiotics|Taxim-O 200|Cefixime|Strip of 10|110|1
+Antibiotics|Doxycycline 100|Doxycycline capsules|Strip of 10|60|1
+Antibiotics|Metrogyl 400|Metronidazole – infections|Strip of 15|26|1
+Antibiotics|Norflox-TZ|Norfloxacin + Tinidazole|Strip of 10|95|1
+Antibiotics|Levoflox 500|Levofloxacin|Strip of 10|110|1
+Antibiotics|Forcan 150|Fluconazole – antifungal|Strip of 1|25|1
+Antibiotics|Zentel|Albendazole – deworming|1 tablet|20|0
+Diabetes Care|Glycomet 500|Metformin|Strip of 20|30|1
+Diabetes Care|Glycomet GP 1|Metformin + Glimepiride|Strip of 15|115|1
+Diabetes Care|Janumet 50/500|Sitagliptin + Metformin|Strip of 15|490|1
+Diabetes Care|Galvus Met|Vildagliptin + Metformin|Strip of 15|380|1
+Diabetes Care|Amaryl 1mg|Glimepiride|Strip of 30|190|1
+Diabetes Care|Jardiance 10|Empagliflozin|Strip of 10|560|1
+Diabetes Care|Huminsulin 30/70|Insulin injection|10 ml vial|180|1
+Diabetes Care|Lantus Solostar|Insulin glargine pen|3 ml pen|720|1
+Diabetes Care|Accu-Chek Active Strips|Glucometer test strips|Box of 50|950|0
+Diabetes Care|Sugar Free Gold|Sugar substitute|100 pellets|125|0
+Heart & BP|Telma 40|Telmisartan – blood pressure|Strip of 15|230|1
+Heart & BP|Amlong 5|Amlodipine – hypertension|Strip of 15|80|1
+Heart & BP|Losar 50|Losartan|Strip of 15|95|1
+Heart & BP|Atorva 10|Atorvastatin – cholesterol|Strip of 15|110|1
+Heart & BP|Rosuvas 10|Rosuvastatin|Strip of 15|240|1
+Heart & BP|Ecosprin 75|Low-dose aspirin – heart protection|Strip of 14|5|1
+Heart & BP|Clopitab 75|Clopidogrel|Strip of 15|95|1
+Heart & BP|Metolar XR 50|Metoprolol|Strip of 15|140|1
+Heart & BP|Concor 5|Bisoprolol|Strip of 10|135|1
+Heart & BP|Sorbitrate 5|Isosorbide dinitrate – angina|Strip of 50|35|1
+Heart & BP|Lasix 40|Furosemide – diuretic|Strip of 15|15|1
+Vitamins & Supplements|Becosules Capsules|Vitamin B-complex + Vitamin C|Strip of 20|50|0
+Vitamins & Supplements|Supradyn Daily|Multivitamin tablets|Strip of 15|55|0
+Vitamins & Supplements|Revital H|Multivitamin with ginseng|Pack of 30|340|0
+Vitamins & Supplements|Limcee 500|Vitamin C chewable|Strip of 15|25|0
+Vitamins & Supplements|Shelcal 500|Calcium + Vitamin D3|Strip of 15|125|0
+Vitamins & Supplements|Uprise D3 60K|Vitamin D3 60000 IU|4 capsules|120|0
+Vitamins & Supplements|Neurobion Forte|Vitamin B12 complex|Strip of 30|40|0
+Vitamins & Supplements|Zincovit|Multivitamin with zinc|Strip of 15|110|0
+Vitamins & Supplements|Evion 400|Vitamin E capsules|Strip of 10|35|0
+Vitamins & Supplements|Livogen|Iron + Folic acid|Strip of 15|60|0
+Vitamins & Supplements|Seven Seas Cod Liver Oil|Omega-3 capsules|Pack of 100|450|0
+Vitamins & Supplements|Ensure Powder|Complete adult nutrition|400 g|720|0
+Vitamins & Supplements|Protinex Original|Protein supplement|250 g|520|0
+Skin Care|Betnovate-N Cream|Betamethasone + Neomycin|20 g|45|1
+Skin Care|Candid Cream|Clotrimazole – fungal infection|20 g|90|0
+Skin Care|Candid Dusting Powder|Antifungal powder|100 g|140|0
+Skin Care|Soframycin Cream|Antibacterial cream|30 g|60|0
+Skin Care|Boroline|Antiseptic cream|20 g|40|0
+Skin Care|Lacto Calamine Lotion|Oil control & soothing|120 ml|170|0
+Skin Care|Cetaphil Moisturising Lotion|Gentle moisturiser|100 ml|380|0
+Skin Care|Itch Guard Cream|Itch relief|20 g|85|0
+Skin Care|Scabper (Permethrin 5%)|Scabies & lice|30 g|120|1
+Skin Care|Nizral Shampoo|Ketoconazole – anti-dandruff|100 ml|320|0
+Skin Care|T-Bact Ointment|Mupirocin – skin infection|5 g|130|1
+Skin Care|Neosporin Powder|Antibiotic wound powder|10 g|110|0
+Eye & Ear Care|Refresh Tears|Lubricating eye drops|10 ml|150|0
+Eye & Ear Care|Moxicip Eye Drops|Moxifloxacin – eye infection|5 ml|90|1
+Eye & Ear Care|Itone Eye Drops|Ayurvedic eye drops|10 ml|90|0
+Eye & Ear Care|Ciplox-D Eye/Ear Drops|Ciprofloxacin + Dexamethasone|5 ml|25|1
+Eye & Ear Care|Waxsol Ear Drops|Ear wax removal|10 ml|95|0
+Eye & Ear Care|Otogesic Ear Drops|Earache relief|5 ml|70|1
+Women's Health|Meprate 10|Medroxyprogesterone|Strip of 10|85|1
+Women's Health|Folvite 5mg|Folic acid|Strip of 30|35|1
+Women's Health|i-pill|Emergency contraceptive|1 tablet|110|0
+Women's Health|Mala-D|Oral contraceptive|Strip of 28|10|0
+Women's Health|Prega News|Pregnancy test kit|1 kit|60|0
+Women's Health|Whisper Ultra XL|Sanitary pads|Pack of 15|200|0
+Women's Health|Cystone|Urinary health (Himalaya)|60 tablets|185|0
+Women's Health|V Wash Plus|Intimate hygiene wash|100 ml|190|0
+Baby Care|Calpol Paediatric Syrup|Paracetamol for children|60 ml|35|0
+Baby Care|Woodward's Gripe Water|Colic & gas relief|130 ml|70|0
+Baby Care|Colicaid Drops|Simethicone – infant colic|15 ml|90|0
+Baby Care|Johnson's Baby Powder|Gentle baby powder|200 g|210|0
+Baby Care|Himalaya Baby Lotion|Baby moisturiser|200 ml|220|0
+Baby Care|Pampers Pants (M)|Baby diapers|Pack of 20|399|0
+Baby Care|Cerelac Wheat Apple|Infant cereal|300 g|285|0
+Baby Care|Nasivion Baby Drops|Saline nasal drops|10 ml|95|0
+Baby Care|Rash Free Cream|Diaper rash cream|50 g|165|0
+First Aid|Dettol Antiseptic Liquid|Disinfectant|250 ml|150|0
+First Aid|Savlon Antiseptic|Antiseptic liquid|200 ml|115|0
+First Aid|Band-Aid Strips|Adhesive bandages|Pack of 20|60|0
+First Aid|Betadine Ointment|Povidone-iodine wound care|20 g|130|0
+First Aid|Crepe Bandage 10cm|Elastic support bandage|1 roll|120|0
+First Aid|Absorbent Cotton Roll|Surgical cotton|100 g|55|0
+First Aid|Hansaplast Micropore Tape|Medical tape|1 roll|70|0
+First Aid|Burnol Cream|Burn relief|20 g|75|0
+First Aid|Silverex Ointment|Silver sulfadiazine – burns|20 g|105|1
+First Aid|Surgical Face Masks|3-ply masks|Pack of 50|199|0
+First Aid|Dettol Hand Sanitizer|Alcohol-based sanitiser|200 ml|100|0
+Ayurveda|Dabur Chyawanprash|Immunity booster|1 kg|380|0
+Ayurveda|Liv.52 (Himalaya)|Liver care tablets|100 tablets|175|0
+Ayurveda|Himalaya Ashwagandha|Stress & vitality|60 tablets|200|0
+Ayurveda|Triphala Churna|Digestion & detox|100 g|90|0
+Ayurveda|Septilin|Immunity tablets|60 tablets|185|0
+Ayurveda|Hajmola|Digestive candy|120 tablets|60|0
+Ayurveda|Zandu Balm|Headache & cold balm|8 ml|45|0
+Ayurveda|Patanjali Giloy Ghanvati|Immunity tablets|60 tablets|100|0
+Thyroid & Hormones|Thyronorm 50|Levothyroxine – hypothyroidism|Bottle of 120|180|1
+Thyroid & Hormones|Eltroxin 100|Levothyroxine|Bottle of 100|160|1
+Thyroid & Hormones|Neo-Mercazole 5|Carbimazole – hyperthyroidism|Strip of 30|95|1
+Thyroid & Hormones|Wysolone 10|Prednisolone – steroid|Strip of 10|18|1
+Thyroid & Hormones|Dexona|Dexamethasone tablets|Strip of 30|10|1
+Mental Health & Sleep|Restyl 0.25|Alprazolam – anxiety|Strip of 10|30|1
+Mental Health & Sleep|Nexito 10|Escitalopram – depression|Strip of 10|110|1
+Mental Health & Sleep|Zolfresh 10|Zolpidem – insomnia|Strip of 10|95|1
+Mental Health & Sleep|Melatonin 3mg|Sleep support|Pack of 30|350|0
+Mental Health & Sleep|Gabapin 300|Gabapentin – nerve pain|Strip of 10|180|1
+Personal Care|Colgate Sensitive|Toothpaste for sensitive teeth|80 g|120|0
+Personal Care|Sensodyne Repair|Sensitive toothpaste|70 g|215|0
+Personal Care|Listerine Cool Mint|Mouthwash|250 ml|170|0
+Personal Care|Durex Extra Thin|Condoms|Pack of 10|299|0
+Personal Care|Vaseline Petroleum Jelly|Skin protectant|85 g|120|0
+Personal Care|Odomos Cream|Mosquito repellent|100 g|95|0
+Devices|Dr. Morepen Digital Thermometer|Fast & accurate|1 unit|180|0
+Devices|Omron BP Monitor HEM-7120|Automatic BP monitor|1 unit|2150|0
+Devices|Accu-Chek Active Glucometer|Blood sugar monitor kit|1 kit|1290|0
+Devices|Pulse Oximeter|SpO2 & pulse monitor|1 unit|999|0
+Devices|Steam Vaporizer|Facial & nasal steam|1 unit|350|0
+Devices|Hot Water Bag|Pain relief bag|1 unit|250|0
+Devices|Nebulizer Machine|Compressor nebulizer|1 unit|1650|0
+Devices|Tynor Knee Cap|Knee support|1 pair|420|0`.split("\n").map((l,i)=>{const[c,n,u,p,pr,rx]=l.split("|");return{id:i,c,n,u,p,pr:+pr,rx:rx=="1"}});
+
+let cat="",cart=load("cart",{}),wish=load("wish",[]),wishView=false;
+function load(k,d){try{return JSON.parse(localStorage.getItem("mc_"+k))||d}catch(e){return d}}
+function save(){try{localStorage.setItem("mc_cart",JSON.stringify(cart));localStorage.setItem("mc_wish",JSON.stringify(wish))}catch(e){}}
+const $=id=>document.getElementById(id);
+const C=Object.keys(CATS);
+$("nav").innerHTML=`<a class="on" onclick="pick(-1)">🏠 All Products</a>`+C.map((c,i)=>`<a onclick="pick(${i})">${CATS[c]} ${c}</a>`).join("");
+$("catGrid").innerHTML=C.map((c,i)=>`<div class="cat" onclick="pick(${i})"><div class="e">${CATS[c]}</div><p>${c}</p><small style="color:var(--mt)">${D.filter(d=>d.c==c).length} items</small></div>`).join("");
+function pick(i){cat=i<0?"":C[i];wishView=false;$("q").value="";document.querySelectorAll("nav a").forEach((a,j)=>a.classList.toggle("on",j==i+1));render();$("shop").scrollIntoView({behavior:"smooth"})}
+function go(){wishView=false;render();$("shop").scrollIntoView({behavior:"smooth"})}
+$("q").addEventListener("input",()=>{wishView=false;render()});
+$("q").addEventListener("keydown",e=>e.key=="Enter"&&go());
+function showWish(){wishView=true;render();$("shop").scrollIntoView({behavior:"smooth"})}
+function render(){
+ const q=$("q").value.toLowerCase().trim(),f=$("rxf").value,s=$("sort").value;
+ let L=D.filter(d=>(wishView?wish.includes(d.id):(!cat||d.c==cat))&&(!q||(d.n+" "+d.u+" "+d.c).toLowerCase().includes(q))&&(!f||(f=="rx")==d.rx));
+ if(s=="lo")L.sort((a,b)=>a.pr-b.pr);if(s=="hi")L.sort((a,b)=>b.pr-a.pr);if(s=="az")L.sort((a,b)=>a.n.localeCompare(b.n));
+ $("title").textContent=wishView?"♡ Your Wishlist":q?`Results for "${q}"`:cat||"All Medicines";
+ $("count").textContent=L.length+" products";
+ $("grid").innerHTML=L.length?L.map(d=>`<div class="card">${d.rx?'<span class="rx">Rx</span>':''}<button class="wl" onclick="wl(${d.id})">${wish.includes(d.id)?"❤️":"🤍"}</button>
+ <div class="img">${art(d)}<img src="images/${slug(d.n)}.jpg" alt="${d.n}" loading="lazy" onload="this.style.display='block'" onerror="imgErr(this)"></div><div class="b"><h4>${d.n}</h4><div class="u">${d.p} • ${d.c}</div><div class="d">${d.u}</div>
+ <div class="pr"><span><b>₹${Math.round(d.pr*.85)}</b><s>₹${d.pr}</s></span><button class="add" onclick="add(${d.id})">Add +</button></div></div></div>`).join(""):'<div class="empty">No products found. Try another search.</div>';
+}
+
+// Drawn pack illustrations (shown when no real photo exists in /images)
+const HUE={};C.forEach((c,i)=>HUE[c]=Math.round(i*360/C.length));
+function esc(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+function kind(d){const t=(d.n+" "+d.p+" "+d.u).toLowerCase();
+ if(d.c=="Devices")return"box";if(/inhaler/.test(t))return"inhaler";if(/strip|tablets|capsules|pellets|caps\b/.test(t))return"strip";
+ if(/drops|spray/.test(t))return"dropper";if(/cream|ointment|gel\b|balm|tube|toothpaste|jelly|repair|sensitive/.test(t)&&/ g\b|ml/.test(t))return"tube";
+ if(/ ml|syrup|liquid|lotion|wash|vial|tonic|water/.test(t))return"bottle";return"box"}
+function art(d){const h=HUE[d.c],c1=`hsl(${h},55%,45%)`,c2=`hsl(${h},60%,92%)`,c3=`hsl(${h},50%,30%)`,k=kind(d);
+ const nm=esc(d.n.length>18?d.n.slice(0,17)+"…":d.n),sub=esc(d.p);
+ let g="";
+ if(k=="strip"){g=`<rect x="40" y="35" width="170" height="100" rx="8" fill="#e9eef0" stroke="#b9c3c7"/><rect x="40" y="35" width="170" height="26" rx="8" fill="${c1}"/><text x="125" y="53" font-size="12" fill="#fff" text-anchor="middle" font-weight="600">${nm}</text>`;
+  for(let r=0;r<2;r++)for(let i=0;i<5;i++)g+=`<ellipse cx="${62+i*32}" cy="${83+r*30}" rx="12" ry="10" fill="#fff" stroke="#c9d2d6"/><ellipse cx="${62+i*32}" cy="${83+r*30}" rx="7" ry="6" fill="${c2}"/>`;}
+ else if(k=="bottle"){g=`<rect x="105" y="18" width="40" height="18" rx="3" fill="${c3}"/><path d="M98 38h54l8 16v92a8 8 0 0 1-8 8H98a8 8 0 0 1-8-8V54z" fill="${c1}"/><rect x="94" y="70" width="62" height="56" rx="4" fill="#fff"/><text x="125" y="94" font-size="9" fill="${c3}" text-anchor="middle" font-weight="600">${nm}</text><text x="125" y="110" font-size="8" fill="#777" text-anchor="middle">${sub}</text>`;}
+ else if(k=="dropper"){g=`<path d="M117 12h16v14h-16z" fill="${c3}"/><rect x="110" y="26" width="30" height="16" rx="3" fill="${c3}"/><rect x="98" y="42" width="54" height="104" rx="10" fill="${c1}"/><rect x="102" y="70" width="46" height="50" rx="4" fill="#fff"/><text x="125" y="92" font-size="8" fill="${c3}" text-anchor="middle" font-weight="600">${nm.slice(0,12)}</text><text x="125" y="106" font-size="7" fill="#777" text-anchor="middle">${sub}</text>`;}
+ else if(k=="tube"){g=`<path d="M45 60h140l12 10v30l-12 10H45z" fill="${c1}"/><rect x="197" y="72" width="22" height="26" rx="3" fill="${c3}"/><path d="M40 58h8v54h-8z" fill="${c3}"/><rect x="62" y="70" width="110" height="30" rx="4" fill="#fff"/><text x="117" y="85" font-size="10" fill="${c3}" text-anchor="middle" font-weight="600">${nm}</text><text x="117" y="96" font-size="7" fill="#777" text-anchor="middle">${sub}</text>`;}
+ else if(k=="inhaler"){g=`<rect x="105" y="20" width="44" height="80" rx="8" fill="#d8dee2"/><path d="M95 95h64v30a10 10 0 0 1-10 10h-44a10 10 0 0 1-10-10z" fill="${c1}"/><rect x="138" y="120" width="40" height="22" rx="5" fill="${c1}"/><text x="127" y="62" font-size="8" fill="${c3}" text-anchor="middle" font-weight="600" transform="rotate(-90 127 62)">${nm}</text>`;}
+ else{g=`<path d="M70 45l20-15h100l-20 15z" fill="${c3}"/><path d="M170 45l20-15v100l-20 15z" fill="${c3}" opacity=".8"/><rect x="70" y="45" width="100" height="100" fill="${c1}"/><rect x="76" y="70" width="88" height="50" fill="#fff"/><text x="120" y="90" font-size="9" fill="${c3}" text-anchor="middle" font-weight="600">${nm.slice(0,16)}</text><text x="120" y="106" font-size="7" fill="#777" text-anchor="middle">${sub}</text><text x="120" y="62" font-size="14" fill="#fff" text-anchor="middle">✚</text>`;}
+ return`<svg viewBox="0 0 250 165" xmlns="http://www.w3.org/2000/svg" font-family="Poppins,sans-serif"><rect width="250" height="165" fill="${c2}"/><ellipse cx="125" cy="155" rx="80" ry="6" fill="#0001"/>${g}</svg>`}
+
+// Product photos: put files in an "images" folder next to this page, named like dolo-650-tablet.jpg (or .png / .webp).
+// If no photo is found, the category icon is shown instead.
+function slug(n){return n.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}
+function imgErr(im){const ext=["png","webp"],i=+(im.dataset.t||0);if(i<ext.length){im.dataset.t=i+1;im.src=im.src.replace(/\.\w+$/,"."+ext[i])}else im.remove()}
+function wl(id){wish=wish.includes(id)?wish.filter(x=>x!=id):[...wish,id];save();upd();render()}
+function add(id){cart[id]=(cart[id]||0)+1;save();upd();toast("Added "+D[id].n+(D[id].rx?" (Rx required)":""))}
+function qty(id,d){cart[id]+=d;if(cart[id]<=0)delete cart[id];save();upd()}
+function upd(){
+ const ids=Object.keys(cart);$("cc").textContent=ids.reduce((a,k)=>a+cart[k],0);$("wc").textContent=wish.length;
+ let t=0;$("items").innerHTML=ids.length?ids.map(k=>{const d=D[k],p=Math.round(d.pr*.85);t+=p*cart[k];return`<div class="it"><span style="font-size:26px">${CATS[d.c]}</span><div><b>${d.n}</b><br><small>₹${p} × ${cart[k]}</small></div><button onclick="qty(${k},-1)">−</button>${cart[k]}<button onclick="qty(${k},1)">+</button></div>`}).join(""):'<p class="empty">Your cart is empty</p>';
+ if(t>=999)t=Math.round(t*.8);$("tt").textContent="₹"+t+(t>0&&t<499?" + ₹40 delivery":"");
+}
+function tog(o){$("dr").classList.toggle("op",!!o);$("ov").classList.toggle("op",!!o)}
+function checkout(){if(!Object.keys(cart).length)return toast("Cart is empty");const rx=Object.keys(cart).some(k=>D[k].rx);toast(rx?"Please upload a prescription to continue (demo)":"Order placed successfully! (demo)");if(!rx){cart={};save();upd();tog(0)}}
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("sh");clearTimeout(t._);t._=setTimeout(()=>t.classList.remove("sh"),2200)}
+render();upd();
+</script>
+</body></html>
