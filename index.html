@@ -73,6 +73,29 @@ footer .w{max-width:1300px;margin:auto;display:grid;grid-template-columns:repeat
 footer h5{font-family:Cinzel,serif;color:#fff;font-size:16px;margin-bottom:10px}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--g2);color:#fff;padding:10px 20px;border-radius:30px;opacity:0;transition:.3s;z-index:60;pointer-events:none}
 .toast.sh{opacity:1}
+.modal{position:fixed;inset:0;background:#0006;z-index:70;display:none;align-items:center;justify-content:center;padding:16px}
+.modal.op{display:flex}
+.mbox{background:#fff;border-radius:14px;width:min(560px,100%);max-height:92vh;overflow:auto;padding:24px}
+.mbox h3{font-family:Cinzel,serif;color:var(--g2);display:flex;justify-content:space-between;margin-bottom:6px}
+.mbox label{display:block;font-size:13px;font-weight:500;margin:12px 0 4px}
+.mbox input,.mbox textarea{width:100%;padding:9px 12px;border:1px solid var(--ln);border-radius:6px;font:inherit}
+.drop{border:2px dashed var(--g);border-radius:10px;padding:22px;text-align:center;cursor:pointer;background:#f3faf6;color:var(--g);margin-top:12px}
+.drop.on{background:#e2f3ea}
+.prev{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.prev div{width:80px;height:80px;border:1px solid var(--ln);border-radius:6px;overflow:hidden;display:grid;place-items:center;font-size:11px;text-align:center;background:#fafafa}
+.prev img{width:100%;height:100%;object-fit:cover}
+.rxl{margin-top:20px;border-top:1px solid var(--ln);padding-top:14px}
+.rxi{display:flex;gap:10px;align-items:center;border:1px solid var(--ln);border-radius:8px;padding:8px;margin-top:8px;font-size:13px}
+.rxi img{width:48px;height:48px;object-fit:cover;border-radius:4px}
+.rxi div{flex:1}.rxi button{border:0;background:none;color:#c0392b;cursor:pointer;font-size:13px}
+.scan{margin-top:16px;border:1px solid var(--ln);border-radius:10px;padding:14px;background:#f8fbf9}
+.scan h4{color:var(--g2);margin-bottom:6px}
+.det{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--ln);font-size:13px}
+.det span{flex:1}.det input[type=number]{width:54px;padding:4px}
+.det input[type=checkbox]{width:auto}
+.prog{height:6px;background:var(--ln);border-radius:4px;overflow:hidden;margin:8px 0}.prog i{display:block;height:100%;background:var(--g);width:0;transition:.2s}
+.rxbtn{background:var(--acc);color:#fff;border-radius:20px;padding:6px 12px}
+
 @media(max-width:700px){.top{flex-wrap:wrap}.search{order:3;flex-basis:100%}.icons{margin-left:auto}}
 </style>
 </head>
@@ -82,7 +105,7 @@ footer h5{font-family:Cinzel,serif;color:#fff;font-size:16px;margin-bottom:10px}
  <div class="top">
   <div class="logo"><div class="ic">✚</div><div><h1>MediCare Pharmacy</h1><small>TRUSTED MEDICINES • ESTD. 1995</small></div></div>
   <div class="search"><input id="q" placeholder="Search medicines, e.g. Paracetamol, Dolo, ORS..."><button onclick="go()">🔍</button></div>
-  <div class="icons"><span>👤 Account</span><span onclick="showWish()">♡ Wishlist<i class="badge" id="wc">0</i></span><span onclick="tog(1)">🛒 Cart<i class="badge" id="cc">0</i></span></div>
+  <div class="icons"><span class="rxbtn" onclick="openRx()">📄 Upload Prescription<i class="badge" id="rc" style="background:var(--g2)">0</i></span><span>👤 Account</span><span onclick="showWish()">♡ Wishlist<i class="badge" id="wc">0</i></span><span onclick="tog(1)">🛒 Cart<i class="badge" id="cc">0</i></span></div>
  </div>
  <nav id="nav"></nav>
 </header>
@@ -92,7 +115,7 @@ footer h5{font-family:Cinzel,serif;color:#fff;font-size:16px;margin-bottom:10px}
  <h2>Your Trusted Neighbourhood Pharmacy,<br>Delivered to Your Doorstep</h2>
  <em>"Every medicine you need – from fever tablets to diabetes care."</em>
  <p>Browse everyday medicines, OTC products, vitamins, baby care and first-aid essentials available at a regular medical shop. Licensed pharmacists verify every prescription order.</p>
- <a class="btn" href="#shop">Shop Medicines</a><a class="btn o" href="#cats">Browse Categories</a>
+ <a class="btn" href="#shop">Shop Medicines</a><a class="btn o" href="#cats">Browse Categories</a><a class="btn o" onclick="openRx()">📄 Upload Prescription</a>
 </section>
 
 <div class="feat">
@@ -114,7 +137,7 @@ footer h5{font-family:Cinzel,serif;color:#fff;font-size:16px;margin-bottom:10px}
 
 <footer><div class="w">
  <div><h5>MediCare Pharmacy</h5>Serving families with genuine medicines and caring advice since 1995.</div>
- <div><h5>Quick Links</h5>About Us<br>Upload Prescription<br>Track Order<br>FAQs</div>
+ <div><h5>Quick Links</h5>About Us<br><a style="cursor:pointer;text-decoration:underline" onclick="openRx()">Upload Prescription</a><br>Track Order<br>FAQs</div>
  <div><h5>Policies</h5>Returns &amp; Refunds<br>Privacy Policy<br>Terms of Service</div>
  <div><h5>Contact</h5>📍 MG Road, Bengaluru<br>📞 1800-123-4567<br>✉ care@medicare.example</div>
 </div><p style="text-align:center;margin-top:30px;opacity:.7">© 2026 MediCare Pharmacy. All rights reserved.</p></footer>
@@ -123,6 +146,24 @@ footer h5{font-family:Cinzel,serif;color:#fff;font-size:16px;margin-bottom:10px}
 <div class="drawer" id="dr"><h3>Your Cart <span style="cursor:pointer" onclick="tog(0)">✕</span></h3><div class="items" id="items"></div>
 <div class="tot"><div class="bar"><b>Total</b><b id="tt">₹0</b></div><button class="btn" style="width:100%;margin:0" onclick="checkout()">Proceed to Checkout</button></div></div>
 <div class="toast" id="toast"></div>
+<div class="modal" id="rxm" onclick="if(event.target==this)closeRx()"><div class="mbox">
+ <h3>📄 Upload Prescription <span style="cursor:pointer" onclick="closeRx()">✕</span></h3>
+ <p style="font-size:13px;color:var(--mt)">Upload a clear photo or PDF of the prescription your doctor gave you. Our pharmacist will check it before dispatching Rx medicines.</p>
+ <label>Patient name *</label><input id="rxp" placeholder="e.g. Ramesh Kumar">
+ <label>Doctor name</label><input id="rxd" placeholder="e.g. Dr. S. Rao">
+ <label>Prescription date</label><input id="rxdt" type="date">
+ <label>Notes for the pharmacist</label><textarea id="rxn" rows="2" placeholder="e.g. Need 1 month supply"></textarea>
+ <div class="drop" id="drop" onclick="document.getElementById('rxf2').click()">📤 <b>Click to choose</b> or drag &amp; drop files here<br><small>JPG, PNG or PDF • up to 5 files</small></div>
+ <input type="file" id="rxf2" accept="image/*,application/pdf" multiple hidden>
+ <div class="prev" id="prev"></div>
+ <button class="btn" style="width:100%;margin-top:16px" onclick="saveRx()">Save &amp; Read Prescription</button>
+ <div class="scan" id="scan" style="display:none"></div>
+ <label>Can't read it? Type the medicine names from the prescription</label>
+ <textarea id="rxtype" rows="2" placeholder="e.g. Augmentin 625, Dolo 650, Pan 40"></textarea>
+ <button class="btn o" style="width:100%;margin-top:8px" onclick="findMeds($('rxtype').value,'typed list')">Find these medicines</button>
+ <div class="rxl"><b>Your prescriptions</b><div id="rxlist"></div></div>
+ <p style="font-size:11px;color:var(--mt);margin-top:12px">🔒 Prescriptions are stored privately in this browser on this device.</p>
+</div></div>
 
 <script>
 const CATS={"Fever & Pain":"🌡️","Cold, Cough & Allergy":"🤧","Stomach & Digestion":"🫃","Antibiotics":"💊","Diabetes Care":"🩸","Heart & BP":"❤️","Vitamins & Supplements":"🍊","Skin Care":"🧴","Eye & Ear Care":"👁️","Women's Health":"🌸","Baby Care":"🍼","First Aid":"🩹","Ayurveda":"🌿","Thyroid & Hormones":"🦋","Mental Health & Sleep":"🧠","Personal Care":"🪥","Devices":"🩺"};
@@ -353,7 +394,54 @@ function upd(){
  if(t>=999)t=Math.round(t*.8);$("tt").textContent="₹"+t+(t>0&&t<499?" + ₹40 delivery":"");
 }
 function tog(o){$("dr").classList.toggle("op",!!o);$("ov").classList.toggle("op",!!o)}
-function checkout(){if(!Object.keys(cart).length)return toast("Cart is empty");const rx=Object.keys(cart).some(k=>D[k].rx);toast(rx?"Please upload a prescription to continue (demo)":"Order placed successfully! (demo)");if(!rx){cart={};save();upd();tog(0)}}
+function checkout(){if(!Object.keys(cart).length)return toast("Cart is empty");const rx=Object.keys(cart).some(k=>D[k].rx);
+ if(rx&&!rxs.length){tog(0);openRx();return toast("Your cart has Rx medicines – please upload a prescription")}
+ toast("Order placed successfully!"+(rx?" Pharmacist will verify your prescription.":"")+" (demo)");cart={};save();upd();tog(0)}
+// Prescriptions
+let rxs=load("rx",[]),pend=[];
+function saveRxs(){try{localStorage.setItem("mc_rx",JSON.stringify(rxs));return true}catch(e){toast("Storage full – delete an old prescription first");return false}}
+function openRx(){$("rxm").classList.add("op");drawRx()}
+function closeRx(){$("rxm").classList.remove("op")}
+function shrink(f){return new Promise(res=>{const r=new FileReader();r.onload=()=>{if(!f.type.startsWith("image/"))return res({name:f.name,type:f.type,data:r.result});
+ const im=new Image();im.onload=()=>{const k=Math.min(1,1200/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=im.width*k;c.height=im.height*k;c.getContext("2d").drawImage(im,0,0,c.width,c.height);res({name:f.name,type:"image/jpeg",data:c.toDataURL("image/jpeg",.75)})};im.src=r.result};r.readAsDataURL(f)})}
+async function addFiles(fs){for(const f of [...fs]){if(pend.length>=5)break;if(!/^image\/|pdf$/.test(f.type))continue;if(f.size>8e6){toast(f.name+" is too large (max 8 MB)");continue}pend.push(await shrink(f))}drawPrev()}
+function drawPrev(){$("prev").innerHTML=pend.map((f,i)=>`<div title="${esc(f.name)}" onclick="pend.splice(${i},1);drawPrev()">${f.type.startsWith("image/")?`<img src="${f.data}">`:"📄<br>"+esc(f.name.slice(0,14))}</div>`).join("")}
+$("rxf2").onchange=e=>{addFiles(e.target.files);e.target.value=""};
+const dz=$("drop");["dragover","dragenter"].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add("on")}));
+["dragleave","drop"].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove("on")}));dz.addEventListener("drop",e=>addFiles(e.dataTransfer.files));
+function saveRx(){const p=$("rxp").value.trim();if(!p)return toast("Please enter the patient name");if(!pend.length)return toast("Please add a prescription photo or PDF");
+ const files=pend;rxs.unshift({id:Date.now(),p,d:$("rxd").value.trim(),dt:$("rxdt").value,n:$("rxn").value.trim(),files});
+ if(!saveRxs()){rxs.shift();return}pend=[];["rxp","rxd","rxdt","rxn"].forEach(i=>$(i).value="");drawPrev();drawRx();toast("Prescription saved ✔");readRx(files)}
+function delRx(id){if(!confirm("Delete this prescription?"))return;rxs=rxs.filter(r=>r.id!=id);saveRxs();drawRx()}
+function viewRx(id,i){const f=rxs.find(r=>r.id==id).files[i];const w=window.open();if(w)w.document.write(f.type.startsWith("image/")?`<img src="${f.data}" style="max-width:100%">`:`<iframe src="${f.data}" style="border:0;width:100%;height:100vh"></iframe>`)}
+function drawRx(){$("rc").textContent=rxs.length;$("rxlist").innerHTML=rxs.length?rxs.map(r=>`<div class="rxi">${r.files[0].type.startsWith("image/")?`<img src="${r.files[0].data}">`:'<span style="font-size:30px">📄</span>'}
+ <div><b>${esc(r.p)}</b>${r.d?" • "+esc(r.d):""}<br><small>${r.dt||new Date(r.id).toLocaleDateString()} • ${r.files.map((f,i)=>`<a style="color:var(--g);cursor:pointer;text-decoration:underline" onclick="viewRx(${r.id},${i})">file ${i+1}</a>`).join(" ")}</small></div>
+ <button onclick="delRx(${r.id})">Delete</button></div>`).join(""):'<p style="font-size:13px;color:var(--mt);margin-top:6px">No prescriptions yet.</p>'}
+drawRx();
+// ---- Read prescription (OCR) and match medicines to the catalogue ----
+const STOP=new Set("tablet tablets tab tabs syrup cream gel drops drop eye ear spray nasal powder lotion ointment capsule capsules cap the and baby plus forte daily original liquid antiseptic digital strips strip pack advance ultra extra cool mint shampoo balm vial pen kit machine monitor bag water".split(" "));
+function norm(t){return t.toLowerCase().replace(/([a-z])(\d)/g,"$1 $2").replace(/[^a-z0-9]+/g," ").trim()}
+function lev(a,b){if(Math.abs(a.length-b.length)>2)return 9;const m=[...Array(b.length+1).keys()];for(let i=1;i<=a.length;i++){let p=m[0];m[0]=i;for(let j=1;j<=b.length;j++){const t=m[j];m[j]=Math.min(m[j]+1,m[j-1]+1,p+(a[i-1]==b[j-1]?0:1));p=t}}return m[b.length]}
+function hit(w,words){if(words.has(w))return 1;if(w.length<5)return 0;for(const x of words)if(lev(w,x)<=(w.length>=8?2:1))return .8;return 0}
+function matchText(text){const words=new Set(norm(text).split(" ").filter(Boolean)),best={};
+ D.forEach(d=>{const tk=norm(d.n.replace(/\(.*?\)/g,"")).split(" "),key=tk.find(t=>/^[a-z]{3,}$/.test(t)&&!STOP.has(t));if(!key)return;
+  const h=hit(key,words);if(!h)return;let sc=h*2;tk.forEach(t=>{if(t!=key&&words.has(t))sc+=/\d/.test(t)?1:.5});
+  if(!best[key]||sc>best[key].sc)best[key]={d,sc}});
+ return Object.values(best).filter(b=>b.sc>=1.6).sort((a,b)=>b.sc-a.sc).map(b=>b.d)}
+function loadOCR(){return window.Tesseract?Promise.resolve():new Promise((ok,no)=>{const sc=document.createElement("script");sc.src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js";sc.onload=ok;sc.onerror=()=>no(new Error("Could not load the reader – check your internet connection"));document.head.appendChild(sc)})}
+async function readRx(files){const box=$("scan"),imgs=files.filter(f=>f.type.startsWith("image/"));box.style.display="block";
+ if(!imgs.length){box.innerHTML="<h4>📄 PDF saved</h4><p style='font-size:13px'>PDFs can't be read automatically. Please type the medicine names below.</p>";return}
+ box.innerHTML="<h4>🔍 Reading your prescription…</h4><div class='prog'><i id='pg'></i></div><small id='pgt'>Loading reader…</small>";
+ try{await loadOCR();let text="";
+  for(let i=0;i<imgs.length;i++){const r=await Tesseract.recognize(imgs[i].data,"eng",{logger:m=>{if(m.status=="recognizing text"&&$("pg")){$("pg").style.width=Math.round((i+m.progress)/imgs.length*100)+"%";$("pgt").textContent="Reading page "+(i+1)+" of "+imgs.length+"…"}}});text+=" "+r.data.text}
+  findMeds(text,"prescription")}catch(e){box.innerHTML="<h4>⚠️ Couldn't read it</h4><p style='font-size:13px'>"+esc(e.message)+". Please type the medicine names below.</p>"}}
+function findMeds(text,src){const box=$("scan"),L=matchText(text||"");box.style.display="block";
+ if(!L.length){box.innerHTML=`<h4>🤔 No medicines recognised</h4><p style="font-size:13px">We couldn't match anything in your ${src} to our catalogue. Handwritten prescriptions are hard to read automatically – please type the medicine names below, or our pharmacist will review it after you order.</p>`;return}
+ box.innerHTML=`<h4>✅ Found ${L.length} medicine${L.length>1?"s":""} in your ${src}</h4><p style="font-size:12px;color:var(--mt)">Please check this list against your prescription. Untick anything that's wrong and set the quantity (strips/packs).</p>`+
+ L.map(d=>`<div class="det"><input type="checkbox" checked data-id="${d.id}"><span><b>${esc(d.n)}</b>${d.rx?' <small style="color:#c0392b">Rx</small>':""}<br><small>${esc(d.p)} • ₹${Math.round(d.pr*.85)}</small></span><input type="number" min="1" max="20" value="1"></div>`).join("")+
+ `<button class="btn" style="width:100%;margin-top:12px" onclick="addFound()">🛒 Add selected to cart</button>`}
+function addFound(){let n=0;document.querySelectorAll("#scan .det").forEach(r=>{const c=r.querySelector("input[type=checkbox]");if(c.checked){const id=+c.dataset.id,q=Math.max(1,Math.min(20,+r.querySelector("input[type=number]").value||1));cart[id]=(cart[id]||0)+q;n+=q}});
+ if(!n)return toast("Nothing selected");save();upd();closeRx();tog(1);toast(n+" item(s) added from your prescription")}
 function toast(m){const t=$("toast");t.textContent=m;t.classList.add("sh");clearTimeout(t._);t._=setTimeout(()=>t.classList.remove("sh"),2200)}
 render();upd();
 </script>
